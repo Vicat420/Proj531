@@ -1,0 +1,7 @@
+Ce GANTT permet de voir heure par heure ce que nous avons fait.
+A titre d'information, les cours de TP sont:   -TP1 (27/11/19) 1->4
+                                               -TP2 (19/11/19) 5->6
+                                               -TP3 (20/11/19) 7->8
+                                               -TP4 (08/11/19) 11->14
+                                               -TP4 (08/11/19) 15->18
+                                               
