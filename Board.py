@@ -6,8 +6,10 @@ from Pieces import Piece
 from Cases import Case
 from Pieces import Piece,Pion,Cavalier,Fou,Tour,Roi,Reine
 
+# We create a board to play.
+
 class Board:
-    #le joueur jour toujours les blancs et se trouve en bas de l'ecran au debut
+    # Initialization of the board, whites are down ad blacks up.
     def __init__(self):
         self.plateau = np.empty((8, 8), Case)
         self.couleur_jouee = 0
@@ -23,11 +25,11 @@ class Board:
         self.position_rois = [[7,3],[0,3]]
         self.echec_et_maths = [False,None]
 
-    #getter
+    # getter
     def get_plateau(self):
         return self.plateau
   
-    #on selectionne une case avec ses coordonnees
+    # Method which allow us to select a case of the board.
     def selectionner_case(self,y,x):
         if [y,x] in self.cases_selectionnables :
             self.get_plateau()[y,x].piece = self.piece_selectionnee
@@ -55,7 +57,7 @@ class Board:
             self.case_selectionnee = [y,x]
             self.cases_selectionnables = self.verifie_echec(self.piece_selectionnee.nature.deplacements(y,x,self.couleur_jouee,self))
 
-
+    # Method which take a pawn and change with in another piece that the user select
     def transformer_pion(self,y,x):
         event = pygame.event.wait()
         while event.type != pygame.MOUSEBUTTONDOWN :
@@ -69,6 +71,7 @@ class Board:
         elif event.pos[0] >= 300 and event.pos[1] <= 300 :
             self.get_plateau()[y,x].piece = Piece(self.couleur_jouee,Reine())
 
+    # Method which display the board on the graphic interface.
     def display(self, changement = None):
         self.screen.fill((0,0,0))
         self.screen.blit(self.chess,(0,0))
@@ -82,22 +85,26 @@ class Board:
             self.screen.blit(changement, (0,0))
         pygame.display.flip()
 
+    # Method which display a message which stop the game if one of the player is checkmate.
     def display_echec_et_maths(self):
         if (self.echec_et_maths[0] == True) and (self.echec_et_maths[1] == 0):
             self.screen.blit(self.echecB,(0,0))
         elif (self.echec_et_maths[0] == True) and (self.echec_et_maths[1] == 1):
             self.screen.blit(self.echecN,(0,0))
 
+    # Define the click of the mouse
     def clic_to_case(self,pos):
         if (36 < pos[0]< 564) and (36 <= pos[1] <= 564):
             case_x = (pos[0]-36)//66
             case_y = (pos[1]-36)//66
             self.selectionner_case(case_y,case_x)
 
+    # Method which draw the cases where a piece can move when we select that.
     def draw_cases_selectionnables(self, cases_a_colorier):
         for case in cases_a_colorier :
             pygame.draw.rect(self.screen, (0,255,0), [case[1]*66+36, case[0]*66+36, 66, 66])
 
+    # Method which test if one of the players is check for each move possible when the user play.
     def verifie_echec(self, liste_cases):
         Liste_possible = []
         for case in liste_cases :
@@ -112,6 +119,7 @@ class Board:
                 Liste_possible += [case]
         return Liste_possible
 
+    # Method which test if the opponent is check.
     def roi_en_echec(self, couleur):
         for i in range(8):
             for j in range(8):
@@ -121,6 +129,7 @@ class Board:
                     return True
         return False
 
+    # Test if one of the players is checkmate.
     def echec_maths(self):
         for i in range(8):
             for j in range(8):
@@ -135,6 +144,7 @@ class Board:
         self.echec_et_maths = [True, self.couleur_jouee]
         return True
 
+    # Method which copy the board
     def copier(self):
         copie = Board()
         for i in range(8):
