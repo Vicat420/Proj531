@@ -4,6 +4,7 @@ import pygame
 import numpy as np
 from Pieces import Piece
 from Cases import Case
+from Pieces import Piece,Pion,Cavalier,Fou,Tour,Roi,Reine
 
 class Board:
     #le joueur jour toujours les blancs et se trouve en bas de l'ecran au debut
@@ -15,7 +16,12 @@ class Board:
         self.cases_selectionnables = []
         self.screen = pygame.display.set_mode((600,600))
         self.chess = pygame.image.load("chess.gif")
+        self.echecB = pygame.image.load("echecB.gif")
+        self.echecN = pygame.image.load("echecN.gif")
+        self.changeN = pygame.image.load("changeN.gif")
+        self.changeB = pygame.image.load("changeB.gif")
         self.position_rois = [[7,3],[0,3]]
+        self.echec_et_maths = [False,None]
 
     #getter
     def get_plateau(self):
@@ -26,12 +32,20 @@ class Board:
         if [y,x] in self.cases_selectionnables :
             self.get_plateau()[y,x].piece = self.piece_selectionnee
             self.get_plateau()[self.case_selectionnee[0],self.case_selectionnee[1]].piece = None
-            if self.piece_selectionnee.nature.nom == 'R' :
-                position_rois[piece_selectionnee.couleur] = [y,x]
+            if self.piece_selectionnee.nature.nom == 'K' :
+                self.position_rois[self.piece_selectionnee.couleur] = [y,x]
+            if (self.piece_selectionnee.nature.nom == 'P') and (y == 7*self.couleur_jouee) :
+                if self.couleur_jouee == 0:
+                    self.display(self.changeB)
+                else :
+                    self.display(self.changeN)
+                self.transformer_pion(y,x)
             self.couleur_jouee = 1 - self.couleur_jouee
+            self.echec_maths()
             self.cases_selectionnables = []
             self.piece_selectionnee = None
             self.case_selectionnee = None
+
             
         elif self.get_plateau()[y,x].piece == None :
             pass
@@ -41,7 +55,21 @@ class Board:
             self.case_selectionnee = [y,x]
             self.cases_selectionnables = self.verifie_echec(self.piece_selectionnee.nature.deplacements(y,x,self.couleur_jouee,self))
 
-    def display(self):
+
+    def transformer_pion(self,y,x):
+        event = pygame.event.wait()
+        while event.type != pygame.MOUSEBUTTONDOWN :
+            event = pygame.event.wait()
+        if event.pos[0] <= 300 and event.pos[1] >= 300:
+            self.get_plateau()[y,x].piece = Piece(self.couleur_jouee,Cavalier())
+        elif event.pos[0] <= 300 and event.pos[1] <= 300 :
+            self.get_plateau()[y,x].piece = Piece(self.couleur_jouee,Tour())
+        elif event.pos[0] >= 300 and event.pos[1] >= 300 :
+            self.get_plateau()[y,x].piece = Piece(self.couleur_jouee,Fou())
+        elif event.pos[0] >= 300 and event.pos[1] <= 300 :
+            self.get_plateau()[y,x].piece = Piece(self.couleur_jouee,Reine())
+
+    def display(self, changement = None):
         self.screen.fill((0,0,0))
         self.screen.blit(self.chess,(0,0))
         self.draw_cases_selectionnables(self.cases_selectionnables)
@@ -49,7 +77,16 @@ class Board:
             for case in k:
                 if case.piece != None :
                     case.draw_piece(self)
+        self.display_echec_et_maths()
+        if changement != None :
+            self.screen.blit(changement, (0,0))
         pygame.display.flip()
+
+    def display_echec_et_maths(self):
+        if (self.echec_et_maths[0] == True) and (self.echec_et_maths[1] == 0):
+            self.screen.blit(self.echecB,(0,0))
+        elif (self.echec_et_maths[0] == True) and (self.echec_et_maths[1] == 1):
+            self.screen.blit(self.echecN,(0,0))
 
     def clic_to_case(self,pos):
         if (36 < pos[0]< 564) and (36 <= pos[1] <= 564):
@@ -67,6 +104,10 @@ class Board:
             board_copie = self.copier()
             board_copie.get_plateau()[case[0], case[1]].piece = self.piece_selectionnee
             board_copie.get_plateau()[self.case_selectionnee[0], self.case_selectionnee[1]].piece = None
+            if board_copie.get_plateau()[case[0],case[1]].piece.nature.nom == 'K':
+                board_copie.position_rois[self.couleur_jouee] = [case[0],case[1]]
+            else :
+                board_copie.position_rois = self.position_rois*1
             if board_copie.roi_en_echec(self.couleur_jouee) == False:
                 Liste_possible += [case]
         return Liste_possible
@@ -80,16 +121,26 @@ class Board:
                     return True
         return False
 
+    def echec_maths(self):
+        for i in range(8):
+            for j in range(8):
+                if (self.get_plateau()[i,j].piece == None):
+                    pass
+                elif self.get_plateau()[i,j].piece.couleur == self.couleur_jouee :
+                    self.piece_selectionnee = self.get_plateau()[i,j].piece
+                    self.case_selectionnee = [i,j]
+                    self.cases_selectionnables = self.verifie_echec(self.piece_selectionnee.nature.deplacements(i,j,self.couleur_jouee,self))
+                    if (self.cases_selectionnables != []):
+                        return False
+        self.echec_et_maths = [True, self.couleur_jouee]
+        return True
+
     def copier(self):
         copie = Board()
         for i in range(8):
             for j in range(8):
                 copie.plateau[i,j] = Case(i,j,self.get_plateau()[i,j].piece)
-        copie.position_rois = self.position_rois
         return copie
 
-
-
-      
 
        
