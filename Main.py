@@ -4,7 +4,7 @@ from Board import Board
 from Cases import Case
 from Pieces import Piece,Pion,Cavalier,Fou,Tour,Roi,Reine
 
-# We create a main to launch the program
+# We have a main that launches the program
 
 def main() :
     # We create a board which is a matrix of zeros
@@ -13,7 +13,7 @@ def main() :
     pygame.init()
 
 
-    # Initialization of the cases
+    # Initialization of the spots, without pieces on them
     for i in range(2,6):
         for j in range(8):
             board.plateau[i,j] = Case(i,j, None)
@@ -50,9 +50,8 @@ def main() :
     board.plateau[7,3] = Case(7,3,Piece(0,Roi()))
 
     
-    # Loop the game while we don't quit by clic on the button of the window.
+    # Infinite loop that allowsthe game to run, as long as we don't close the window.
     while True:
-        
         event = pygame.event.wait()
  
         if event.type == pygame.QUIT:
@@ -72,7 +71,7 @@ if __name__ == "__main__":
     main()    
 
 
-# Method that display the board
+# Method that displays the board
 def afficher_board(board):
     Affichage = np.empty((8, 8), str)
     for i in range(8):
