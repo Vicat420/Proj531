@@ -10,3 +10,5 @@ Créer un dossier dans lequel on sauvergardera l'ensemble des fichiers pythons a
 Enfin lancer le main et le jeu s'affichera.
 
 Pour jouer il suffit de cliquer sur les pions que l'on veut déplacer puis sur la case sur laquelle on veut le déplacer (sachant que les options possibles seront des cases colorées en vert), puis alterner chacun sont tour. Ce sont toujours les blancs qui commencent.
+
+La partie se termine lorsqu'il y a échec et mat (message de fin) ou si l'on ferme la fenêtre.
