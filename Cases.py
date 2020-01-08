@@ -1,12 +1,20 @@
 
 import pygame
 
+#Class which create a case on the board 
+
 class Case:
-    
+
     def __init__(self, y, x, piece):
+        
+        # A case has a position (x,y) on the board and can has a piece.
+        
         self.piece = piece
         self.colonne = x
         self.ligne = y
+
+        # We import the pictures of each piece which will be use for the graphic interface
+        
         self.PionB = pygame.image.load("PionB.gif")
         self.PionN = pygame.image.load("PionN.gif")
         self.TourB = pygame.image.load("TourB.gif")
@@ -20,6 +28,8 @@ class Case:
         self.ReineB = pygame.image.load("ReineB.gif")
         self.ReineN = pygame.image.load("ReineN.gif")
 
+    # Method which draw the piece on the graphic interface.
+    
     def draw_piece(self, board):
         if (self.piece.nature.nom == 'P') and (self.piece.couleur == 0):
             board.screen.blit(self.PionB,(66*self.colonne+36,66*self.ligne+36))
@@ -56,8 +66,3 @@ class Case:
 
         elif (self.piece.nature.nom == 'Q') and (self.piece.couleur == 1):
             board.screen.blit(self.ReineN,(66*self.colonne+36,66*self.ligne+36))
-
-
-    
-            
-
