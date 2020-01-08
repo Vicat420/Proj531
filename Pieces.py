@@ -1,21 +1,20 @@
-# We creaate a piece
-
+# We create a piece
+#This Piece holds a colour (white = 0 and black = 1) and a nature (pawn, king, queen,...)
 class Piece:
     def __init__(self, couleur, nature):   
-        # This parameter permit us to know the color of the use (white = 0 and black = 1)
         self.couleur = couleur
-        # This is the nature of the piece, for example pawm, king, queen...
         self.nature = nature
+
+        
         
 # Class pawn
-        
 class Pion:
     
     def __init__(self):
         # This is its name on the matrix
         self.nom = 'P'
     
-    # Define the position of the piece at the beginning of the game depending on the color
+    # Checks if a pawn hasn't moved since the beginning of the game (used to check if the pawn can move forward twice)
     def est_a_origine(self,y,couleur) :
         if (couleur == 1) and (y == 1) :
             return True
@@ -24,9 +23,11 @@ class Pion:
         else :
             return False
 
-    # Define all the directions that can take the pawn
+    # Define all the movements that the pawn can do (regardless of weither or not the pawn will be able to do these moves at a defined moment)
     def deplacements(self,y,x,couleur,board):
         return self.deplacements_avant(y,x,couleur,board) + self.deplacements_diag_g(y,x,couleur,board) + self.deplacements_diag_d(y,x,couleur,board)
+    
+    
     
     # Test if the pawn can move forward
     def deplacements_avant(self,y,x,couleur,board):
@@ -37,14 +38,14 @@ class Pion:
         else : 
             return []
     
-    # Test if the conditions are met to move forward two cases.
+    # Test if the conditions to move forward two spots are met.
     def deplacements_avant_double(self,y,x,couleur,board):
         if self.est_a_origine(y,couleur) and board.get_plateau()[y-2+4*couleur,x].piece == None :
             return [[y-2+4*couleur,x]]
         else :
             return []
         
-    # Test if the conditions are met to movediagonally up left.
+    # Test if the conditions to move diagonally on the left are met.
     def deplacements_diag_g(self,y,x,couleur,board):
         if (x == 0) or ((couleur == 1) and (y == 7)) or ((couleur == 0) and (y == 0)):
             return []
@@ -55,7 +56,7 @@ class Pion:
         else :
             return [[y-1+2*couleur,x-1]]
     
-    # Test if the conditions are met to movediagonally up right.
+    # Test if the conditions to movediagonally on the right  are met.
     def deplacements_diag_d(self,y,x,couleur,board):
         if (x == 7) or ((couleur == 1) and (y == 7)) or ((couleur == 0) and (y == 0)):
             return []
@@ -65,7 +66,8 @@ class Pion:
             return []
         else :
             return [[y-1+2*couleur,x+1]]
-            
+     
+    
 # Class tower
 class Tour:
     
