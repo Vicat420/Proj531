@@ -1,10 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Nov 27 15:07:27 2019
 
-@author: forestay
-"""
-
+import pygame
 
 class Case:
     
@@ -12,3 +7,57 @@ class Case:
         self.piece = piece
         self.colonne = x
         self.ligne = y
+        self.PionB = pygame.image.load("PionB.gif")
+        self.PionN = pygame.image.load("PionN.gif")
+        self.TourB = pygame.image.load("TourB.gif")
+        self.TourN = pygame.image.load("TourN.gif")
+        self.FouB = pygame.image.load("FouB.gif")
+        self.FouN = pygame.image.load("FouN.gif")
+        self.CavalierB = pygame.image.load("CavalierB.gif")
+        self.CavalierN = pygame.image.load("CavalierN.gif")
+        self.RoiB = pygame.image.load("RoiB.gif")
+        self.RoiN = pygame.image.load("RoiN.gif")
+        self.ReineB = pygame.image.load("ReineB.gif")
+        self.ReineN = pygame.image.load("ReineN.gif")
+
+    def draw_piece(self, board):
+        if (self.piece.nature.nom == 'P') and (self.piece.couleur == 0):
+            board.screen.blit(self.PionB,(66*self.colonne+36,66*self.ligne+36))
+
+        elif (self.piece.nature.nom == 'P') and (self.piece.couleur == 1):
+            board.screen.blit(self.PionN,(66*self.colonne+36,66*self.ligne+36))
+
+        elif (self.piece.nature.nom == 'T') and (self.piece.couleur == 0):
+            board.screen.blit(self.TourB,(66*self.colonne+36,66*self.ligne+36))
+
+        elif (self.piece.nature.nom == 'T') and (self.piece.couleur == 1):
+            board.screen.blit(self.TourN,(66*self.colonne+36,66*self.ligne+36))
+
+        elif (self.piece.nature.nom == 'F') and (self.piece.couleur == 0):
+            board.screen.blit(self.FouB,(66*self.colonne+36,66*self.ligne+36))
+
+        elif (self.piece.nature.nom == 'F') and (self.piece.couleur == 1):
+            board.screen.blit(self.FouN,(66*self.colonne+36,66*self.ligne+36))
+
+        elif (self.piece.nature.nom == 'C') and (self.piece.couleur == 0):
+            board.screen.blit(self.CavalierB,(66*self.colonne+36,66*self.ligne+36))
+
+        elif (self.piece.nature.nom == 'C') and (self.piece.couleur == 1):
+            board.screen.blit(self.CavalierN,(66*self.colonne+36,66*self.ligne+36))
+
+        elif (self.piece.nature.nom == 'K') and (self.piece.couleur == 0):
+            board.screen.blit(self.RoiB,(66*self.colonne+36,66*self.ligne+36))
+
+        elif (self.piece.nature.nom == 'K') and (self.piece.couleur == 1):
+            board.screen.blit(self.RoiN,(66*self.colonne+36,66*self.ligne+36))
+
+        elif (self.piece.nature.nom == 'Q') and (self.piece.couleur == 0):
+            board.screen.blit(self.ReineB,(66*self.colonne+36,66*self.ligne+36))
+
+        elif (self.piece.nature.nom == 'Q') and (self.piece.couleur == 1):
+            board.screen.blit(self.ReineN,(66*self.colonne+36,66*self.ligne+36))
+
+
+    
+            
+
