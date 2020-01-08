@@ -1,0 +1,8 @@
+Le but de ce projet est de réaliser un jeu d'échec.
+Notre prorgamme propose les fonctionnalités suivantes :
+
+- Lancer sur interface graphique avec un jeu qui fonctionne au clic de la souris.
+- Sélectionner les pièces et voir les déplacements possibles (cases colorées en vert) pour chacun selon la disposition du plateau et la pièce sélectionée.
+- Déplacer les pièces chacun son tour, blancs puis noirs ce qui respcete le principe du 1vs1.
+- Manger les pièces adverses et mise en échec possible.
+- Lors d'une mise en échec on contraint l'utilisateur à contrer l'adversaire.
