@@ -11,10 +11,10 @@ class Piece:
 class Pion:
     
     def __init__(self):
-        # This is its name on the matrix
+        # This is its name in the matrix
         self.nom = 'P'
     
-    # Checks if a pawn hasn't moved since the beginning of the game (used to check if the pawn can move forward twice)
+    # Checks if a pawn has moved since the beginning of the game (used to check if the pawn can move forward two spots)
     def est_a_origine(self,y,couleur) :
         if (couleur == 1) and (y == 1) :
             return True
@@ -23,7 +23,7 @@ class Pion:
         else :
             return False
 
-    # Define all the movements that the pawn can do (regardless of weither or not the pawn will be able to do these moves at a defined moment)
+    # Defines all the movements that the pawn can do
     def deplacements(self,y,x,couleur,board):
         return self.deplacements_avant(y,x,couleur,board) + self.deplacements_diag_g(y,x,couleur,board) + self.deplacements_diag_d(y,x,couleur,board)
     
@@ -68,18 +68,18 @@ class Pion:
             return [[y-1+2*couleur,x+1]]
      
     
-# Class tower
+# Class Tower
 class Tour:
     
     def __init__(self):
-        # This is its name on the matrix
+        # This is its name in the matrix
         self.nom = 'T'
         
-     # Define all the directions that can take the tower
+     # Define all the movements that the tower can do
     def deplacements(self,y,x,couleur,board):
         return self.deplacements_haut(y,x,couleur,board) + self.deplacements_bas(y,x,couleur,board) + self.deplacements_gauche(y,x,couleur,board) + self.deplacements_droite(y,x,couleur,board)
 
-    # Test if the tower can move up on the matrix and how many cases it can pass.
+    # Test if the tower can move up on the matrix and how many spots it can move, using recursivity.
     def deplacements_haut(self,y,x,couleur,board):
         if y == 0 :
             return []
@@ -90,7 +90,7 @@ class Tour:
         else :
             return [[y-1,x]]
         
-    # Test if the tower can move down on the matrix and how many cases it can pass.
+    # Test if the tower can move down on the matrix and how many spots it can move, using recursivity.
     def deplacements_bas(self,y,x,couleur,board):
         if y == 7 :
             return []
@@ -101,7 +101,8 @@ class Tour:
         else :
             return [[y+1,x]]
     
-    # Test if the tower can move right on the matrix and how many cases it can pass.
+    
+    # Test if the tower can move right on the matrix and how many spots it can pass, using recursivity.
     def deplacements_droite(self,y,x,couleur,board):
         if x == 7 :
             return []
@@ -112,7 +113,7 @@ class Tour:
         else :
             return [[y,x+1]]
      
-    # Test if the tower can move left on the matrix and how many cases it can pass.
+    # Test if the tower can move left on the matrix and how many spots it can pass, using recursivity.
     def deplacements_gauche(self,y,x,couleur,board):
         if x == 0 :
             return []
@@ -128,10 +129,10 @@ class Tour:
 class Cavalier:
     def __init__(self):
         
-        # This is its name on the matrix
+        # This is its name in the matrix
         self.nom = 'C'
     
-    # Define all the directions that can take the knight and test their disponibility
+    # Define all the movements that the knight can do
     def deplacements(self,y,x,couleur,board):
         D = []
         L = [[y+2,x+1],[y+2,x-1],[y-2,x+1],[y-2,x-1],[y+1,x+2],[y+1,x-2],[y-1,x+2,],[y-1,x-2]]
@@ -143,20 +144,19 @@ class Cavalier:
             elif board.get_plateau()[k[0],k[1]].piece.couleur != couleur :
                 D += [k]
         return D
-            
-# Class beshop
-
+          
+        
+# Class bishop
 class Fou:
     def __init__(self):
-        
-        # This is its name on the matrix
+        # This is its name in the matrix
         self.nom = 'F'
     
-     # Define all the directions that can take the beshop
+     # Defines all the movements that the bishop can do
     def deplacements(self,y,x,couleur,board):
         return self.deplacements_h_g(y,x,couleur,board) + self.deplacements_h_d(y,x,couleur,board) + self.deplacements_b_g(y,x,couleur,board) + self.deplacements_b_d(y,x,couleur,board)
     
-    # Test if the conditions are met to move diagonally up left.
+    # Tests if the conditions to move diagonally up left are met.
     def deplacements_h_g(self,y,x,couleur,board):
         if (y == 0) or (x == 0) :
             return []
@@ -167,7 +167,7 @@ class Fou:
         else :
             return [[y-1,x-1]]
     
-    # Test if the conditions are met to move diagonally up right.
+    # Tests if the conditions to move diagonally up right are met.
     def deplacements_h_d(self,y,x,couleur,board):
         if (y == 0) or (x == 7):
             return []
@@ -178,7 +178,7 @@ class Fou:
         else :
             return [[y-1,x+1]]
     
-    # Test if the conditions are met to move diagonally down left.
+    # Tests if the conditions to move diagonally down left are met.
     def deplacements_b_g(self,y,x,couleur,board):
         if (y == 7) or (x == 0) :
             return []
@@ -189,7 +189,7 @@ class Fou:
         else :
             return [[y+1,x-1]]
     
-    # Test if the conditions are met to move diagonally hight right.
+    # Tests if the conditions to move diagonally hight right are met.
     def deplacements_b_d(self,y,x,couleur,board):
         if (y == 7) or (x == 7):
             return []
@@ -204,10 +204,10 @@ class Fou:
          
 class Reine:
     def __init__(self):
-        # This is its name on the matrix
+        # This is its name in the matrix
         self.nom = 'Q'
 
-    # Define all the directions that can take the queen with the help of beshop's and tower's class
+    # Defines all the movements that the queen can do with the help of the bishop and tower's classes
     def deplacements(self,y,x,couleur,board):
          return (Fou().deplacements(y,x,couleur,board) + Tour().deplacements(y,x,couleur,board))
          
@@ -215,10 +215,10 @@ class Reine:
     
 class Roi:
     def __init__(self):
-        # This is its name on the matrix
+        # This is its name in the matrix
         self.nom = 'K'
 
-    # Define all the directions that can take the king and test their disponibility
+    # Defines all the movements that the king can do (it doesn't return the spots where same coloured pieces are)
     def deplacements(self,y,x,couleur,board):
         D = []
         for i in range(-1,2):
